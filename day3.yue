@@ -1,0 +1,37 @@
+import 'util' as util
+
+pat = 'mul%((%d+),(%d+)%)'
+proc_part1 = (ln) ->
+  s = 0
+  for lhs, rhs in ln\gmatch pat
+    s += lhs * rhs
+  s
+
+example = 'xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))'
+assert (proc_part1 example) == 161
+
+util.load_file 'day3_input'
+  |> proc_part1
+  |> print 'part 1:', _
+
+-- part 2; do() and don't()
+example2 = 'xmul(2,4)&mul[3,7]!^don\'t()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))'
+pat2 = '([a-z\']+)%(([0-9,]*)%)'
+proc_part2 = (ln) ->
+  s = 0
+  enabled = true
+  for fn, args in ln\gmatch pat2
+    if enabled and (fn\match 'mul$') and (args\match '(%d+),(%d+)')
+      lhs, rhs = args\match '(%d+),(%d+)'
+      s += lhs * rhs
+    elseif fn\match 'do$'
+      enabled = true
+    elseif fn\match "don't$"
+      enabled = false
+
+  s
+
+assert (proc_part2 example2) == 48
+util.load_file 'day3_input'
+  |> proc_part2
+  |> print 'part 2:', _
