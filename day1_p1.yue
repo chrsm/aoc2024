@@ -1,0 +1,30 @@
+--[[ "pair numbers and measure how far apart they are"... ]]
+import 'inspect' as inspect
+import 'util' as util
+
+parse = (txt) ->
+  ret = 
+    l: {}
+    r: {}
+
+  for v in txt\gmatch "([^\n]*)\n"
+    l, r = v\match "(%d+)%s+(%d+)"
+
+    ret.l[] = l
+    ret.r[] = r
+
+  table.sort ret.l
+  table.sort ret.r
+
+  ret
+
+proc = (t) ->
+  sum = 0
+  for i = 1, #t.l
+    sum += math.abs t.r[i] - t.l[i]
+  sum
+
+util.load_file 'day1_input1.txt'
+  |> parse
+  |> proc
+  |> print

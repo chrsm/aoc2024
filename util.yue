@@ -1,0 +1,15 @@
+load_file = (file) ->
+  v = ''
+  with io.open file
+    v = \read '*a'
+    \close!
+  v
+
+mapln = (txt, fn) ->
+  for v in txt\gmatch "([^\n]*)\n"
+    fn v
+
+export default {
+  :load_file
+  :mapln
+}

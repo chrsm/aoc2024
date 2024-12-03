@@ -1,0 +1,2 @@
+*.yue text eol=lf linguist-language=moonscript
+*.lua text eol=lf

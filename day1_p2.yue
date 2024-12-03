@@ -1,0 +1,34 @@
+--[[ "similarity score" ]]
+import 'inspect' as inspect
+import 'util' as util
+
+parse = (txt) ->
+  ret = 
+    l: {}
+    r: {}
+  for v in txt\gmatch "([^\n]*)\n"
+    l, r = v\match "(%d+)%s+(%d+)"
+    ret.l[] = l
+    ret.r[] = r
+  ret
+
+count = (t, val) ->
+  n = 0
+  for v in *t
+    if v == val
+      n += 1
+  n
+
+proc = (t) ->
+  score = 0
+  for i, v in ipairs t.l
+    score += (count t.r, v) * v
+  score
+
+input = util.load_file 'day1_input1.txt'
+t = parse input
+
+util.load_file 'day1_input1.txt'
+  |> parse
+  |> proc
+  |> print
